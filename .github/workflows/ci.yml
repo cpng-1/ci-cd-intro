@@ -1,56 +1,42 @@
-name: Continuous Integration Workflow
+name: Continuous integration workflow
 
-# This workflow is triggered whenever a new PR is created on the main branch
 on:
   pull_request:
     branches:
       - main
-    paths:
-      - 'web/**'
-  push:
-    branches:
-      - main
-    paths:
-      - 'web/**'
+
+defaults:
+  run:
+    shell: bash
+    working-directory: ./web
 
 jobs:
 
-  # Run unit tests to make sure everything is 👍
   test:
-    name: 'Run unit tests'
-    defaults:
-      run:
-        shell: bash
-        # Define the working directory for all run steps in the workflow
-        working-directory: ./web
-    # Specify the OS we want the workflow to run on
+    name: Run unit tests
     runs-on: ubuntu-latest
-    # Define the steps for this job
     steps:
-    - uses: actions/checkout@v2
-      name: 'Checkout repository'
 
-    - name: 'Install Dependencies'
-      run: npm install
-    
-    - name: 'Run Tests'
-      run: npm run test
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-  # Run the linter to check for code style issues
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run test
+
   lint:
-    name: 'Run linter'
-    defaults:
-      run:
-        shell: bash
-        # Define the working directory for all run steps in the workflow
-        working-directory: ./web
+    name: Run linter
     runs-on: ubuntu-latest
-    steps:    
-    - uses: actions/checkout@v2
-      name: 'Checkout repository'
-    
-    - name: 'Install Dependencies'
-      run: npm install
+    steps:
 
-    - name: 'Run Linter'
-      run: npx standard -v
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run linter
+        run: npx standard -v
+        
